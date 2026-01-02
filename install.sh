@@ -8,17 +8,17 @@ OS="$(uname -s)"
 ARCH="$(uname -m)"
 
 if [[ "$OS" == "Darwin" && "$ARCH" == "arm64" ]]; then
-  FILE="seamless-glance-0.1.0-beta.3-aarch64-apple-darwin"
+  FILE="seamless-glance-0.1.0-beta.8-aarch64-apple-darwin"
 elif [[ "$OS" == "Darwin" ]]; then
-  FILE="seamless-glance-0.1.0-beta.3-x86_64-apple-darwin"
+  FILE="seamless-glance-0.1.0-beta.8-x86_64-apple-darwin"
 elif [[ "$OS" == "Linux" ]]; then
-  FILE="seamless-glance-0.1.0-beta.3-x86_64-unknown-linux-gnu"
+  FILE="seamless-glance-0.1.0-beta.8-x86_64-unknown-linux-gnu"
 else
   echo "Unsupported platform"
   exit 1
 fi
 
-URL="https://github.com/fellscode/seamless-glance-distro/releases/download/v0.1.0/$FILE"
+URL="https://github.com/fellscode/seamless-glance-distro/releases/download/v0.1.0-beta.8/$FILE"
 
 echo "Downloading Seamless Glance..."
 curl -fsSL "$URL" -o "$BIN_NAME"
