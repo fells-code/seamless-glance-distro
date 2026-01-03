@@ -34,6 +34,10 @@ Think **“k9s for AWS”**.
 ```bash
 brew tap fellscode/seamless
 brew install seamless-glance
+
+#or just
+
+brew install fells-code/seamless/seamless-glance
 ```
 
 ### macOS & Linux (alternative)
