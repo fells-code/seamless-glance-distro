@@ -26,7 +26,7 @@ URL="https://github.com/$REPO/releases/download/v$VERSION/$FILE"
 CHECKSUM_URL="https://github.com/$REPO/releases/download/v$VERSION/SHA256SUMS.txt"
 
 echo "⬇️  Downloading Seamless Glance ($VERSION)..."
-curl -fsSL "$URL" -o "$BIN_NAME"
+curl -fsSL "$URL" -o "$FILE"
 
 # Verify checksum if available
 if curl -fsSL "$CHECKSUM_URL" -o SHA256SUMS.txt 2>/dev/null; then
@@ -37,7 +37,8 @@ else
   echo "⚠️  Checksum file not found, skipping verification"
 fi
 
-chmod +x "$BIN_NAME"
+chmod +x "$FILE"
+mv "$FILE" "$BIN_NAME"
 
 # Install location handling
 if [[ -w "$INSTALL_DIR" ]]; then
