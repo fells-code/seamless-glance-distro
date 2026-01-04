@@ -4,8 +4,8 @@
 set -e
 
 BIN_NAME="seamless-glance"
-VERSION="0.1.0-beta.10"
-REPO="fellscode/seamless-glance-distro"
+VERSION="0.1.0-beta.11"
+REPO="fells-code/seamless-glance-distro"
 INSTALL_DIR="/usr/local/bin"
 
 OS="$(uname -s)"
