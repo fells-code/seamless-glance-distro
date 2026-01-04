@@ -32,7 +32,7 @@ Think **“k9s for AWS”**.
 ### macOS (recommended)
 
 ```bash
-brew tap fellscode/seamless
+brew tap fells-code/seamless
 brew install seamless-glance
 
 #or just
@@ -140,4 +140,4 @@ A valid license is required to run the application.
 
 Please open issues or feature requests here:
 
-https://github.com/fellscode/seamless-glance-distro/issues
+https://github.com/fells-code/seamless-glance-distro/issues
