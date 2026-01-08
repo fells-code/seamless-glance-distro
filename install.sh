@@ -4,7 +4,8 @@
 set -e
 
 BIN_NAME="seamless-glance"
-VERSION="0.1.0-beta.13"
+ALIAS="glance"
+VERSION="0.1.0-beta.14"
 REPO="fells-code/seamless-glance-distro"
 INSTALL_DIR="/usr/local/bin"
 
@@ -40,15 +41,19 @@ fi
 chmod +x "$FILE"
 mv "$FILE" "$BIN_NAME"
 
+
 # Install location handling
 if [[ -w "$INSTALL_DIR" ]]; then
   mv "$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
+  ln -sf "$INSTALL_DIR/$BIN_NAME" "$INSTALL_DIR/$ALIAS"
 elif command -v sudo >/dev/null; then
   sudo mv "$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
+  sudo ln -sf "$INSTALL_DIR/$BIN_NAME" "$INSTALL_DIR/$ALIAS"
 else
   INSTALL_DIR="$HOME/.local/bin"
   mkdir -p "$INSTALL_DIR"
   mv "$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
+  ln -sf "$INSTALL_DIR/$BIN_NAME" "$INSTALL_DIR/$ALIAS"
   echo "⚠️  Installed to $INSTALL_DIR (add to PATH if needed)"
 fi
 
