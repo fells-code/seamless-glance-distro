@@ -5,7 +5,7 @@ set -e
 
 BIN_NAME="seamless-glance"
 ALIAS="glance"
-VERSION="0.1.0-beta.14"
+VERSION="0.1.0-beta.15"
 REPO="fells-code/seamless-glance-distro"
 INSTALL_DIR="/usr/local/bin"
 
