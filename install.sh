@@ -29,7 +29,6 @@ CHECKSUM_URL="https://github.com/$REPO/releases/download/v$VERSION/SHA256SUMS.tx
 echo "⬇️  Downloading Seamless Glance ($VERSION)..."
 curl -fsSL "$URL" -o "$FILE"
 
-# Verify checksum if available
 if curl -fsSL "$CHECKSUM_URL" -o SHA256SUMS.txt 2>/dev/null; then
   echo "🔐 Verifying checksum..."
   grep "$FILE" SHA256SUMS.txt | shasum -a 256 -c -
