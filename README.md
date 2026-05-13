@@ -1,109 +1,139 @@
 # Seamless Glance
 
-**Seamless Glance** is a read-only terminal tool that helps engineering teams
-quickly **triage, understand, and navigate cloud infrastructure** after changes,
-deployments, or incidents.
+**Seamless Glance** is a terminal-native AWS operations dashboard built for
+fast triage, wasted-resource discovery, and precise operator pivots into the
+AWS CLI and AWS Console.
 
-It is designed to reduce the time between:
-**“Something changed”** and **“We know where to look.”**
-
-Think of it as a **guided operational view of a cloud infrastructure**, optimized for fast decision
-making rather than configuration.
+It is optimized for the gap between:
+**"Something looks wrong"** and **"We know exactly what to inspect next."**
 
 ---
 
-## What Seamless Glance Does
+## What It Does
 
-Modern AWS environments change constantly through Terraform, CI/CD pipelines,
-and automated scaling. When something goes wrong, teams often lose time
-answering basic questions:
+Seamless Glance is a read-only Rust TUI for AWS environments. It helps teams:
 
-- Is the account healthy?
-- What resources look suspicious or misconfigured?
-- Where should we investigate first?
-- Which console page or CLI command actually matters?
+- surface incidents, hygiene issues, and waste signals quickly
+- understand account inventory without digging through multiple consoles
+- jump directly to the right AWS Console page or CLI command
+- inspect resource details in-terminal before leaving the workflow
+- review cost and savings context without repeatedly hitting Cost Explorer
 
-Seamless Glance provides **immediate, high-signal answers** to those questions
-without forcing engineers to click through dozens of AWS Console pages or
-manually chain CLI commands.
-
-It does **not** replace a cloud console or CLI.
-It helps teams **get to the right place faster**.
+It does **not** replace the AWS Console or CLI.
+It reduces the time to the **right** console page, command, or service view.
 
 ---
 
-## Why Teams Use Seamless Glance
+## Why Teams Use It
 
-### Faster triage after changes
+### Findings-first triage
 
-After a Terraform apply or deployment, Seamless Glance helps teams immediately
-see:
+The app now opens on **Findings** by default and prioritizes:
 
-- Unhealthy target groups
-- Misaligned load balancers
-- Blocked security groups
-- Stopped or unreachable instances
+- incident signals
+- wasted-resource signals
+- hygiene risks
 
-This shortens the gap between deployment and diagnosis.
+That makes the first screen actionable instead of passive inventory.
 
-### Clear operational visibility
+### Inventory with context
 
-The tool highlights:
+Account Overview is an inventory snapshot for the active AWS profile, including:
 
-- Health issues before inventory
-- Risk before configuration
-- Context before detail
+- account and identity context
+- service footprint summaries
+- service inventory counts across key AWS surfaces
 
-Engineers spend less time hunting and more time fixing.
+### Fast operator pivots
 
-### Guided investigation, not automation
+From supported resources, engineers can:
 
-From any resource, engineers can:
+- inspect a structured describe view in-app
+- toggle to a JSON-oriented detail view
+- generate and run AWS CLI commands
+- open the exact AWS Console page
+- prepare SSH commands for EC2 instances
 
-- Inspect full AWS SDK-backed details
-- Jump directly to the exact AWS Console page
-- Pivot into SSH or CLI workflows when needed
+### Cost and savings visibility
 
-Seamless Glance **guides action** without taking control.
+Seamless Glance includes:
+
+- cached Cost Explorer-backed cost overview data
+- forecast and budget gap context
+- usage-aware service cost summaries
+- a Cost Savings view that ties spend and waste signals together
 
 ---
 
-## Supported AWS Services
+## Current AWS Coverage
 
-Seamless Glance currently supports high-impact infrastructure surfaces commonly
-involved in outages and post-deploy debugging:
+Seamless Glance currently includes first-class views for:
 
+- Findings
+- Account Overview
+- Cost Overview
+- Cost Savings
 - EC2
 - ECS
 - Lambda
 - RDS
-- API Gateway (REST and HTTP)
+- API Gateway
 - Load Balancers
 - Target Groups
 - Security Groups
-- SQS (including DLQs)
-- VPCs and subnets
+- SQS
+- VPC
 - Secrets Manager
-- CloudWatch alarms
+- CloudWatch
 
-More services are added with a focus on **triage value**, not breadth.
+Global aggregation currently exists for selected services, including EC2,
+Lambda, and RDS.
 
 ---
 
-## Trust and Security Model
+## Current Findings Coverage
 
-Seamless Glance is built for environments with strict security requirements.
+The current release includes findings such as:
+
+- CloudWatch alarms in `ALARM`
+- missing CloudWatch alarm coverage for deployed services
+- stopped EC2 instances
+- stopped EC2 instances with public IPs or production-like naming
+- EC2 instances missing `Name`, `Owner`, or `Environment` tags
+- low-CPU EC2 instances
+- public security groups
+- security groups exposing sensitive public ports
+- target groups with zero healthy targets
+- degraded target groups
+- orphan target groups
+- load balancers with no active target path
+- load balancers with zero healthy targets
+- SQS queues without DLQs
+- SQS queues with high visible or in-flight messages
+- RDS instances that are not `available`
+- production-like single-AZ RDS instances
+- Lambda functions with high memory sizing or stale deploy dates
+- API Gateway APIs with generic names or long age
+- secrets without rotation
+- production-like secrets without rotation
+- secrets with stale rotation
+- default VPCs still present
+
+---
+
+## Trust And Security Model
+
+Seamless Glance is designed for security-conscious environments.
 
 - Runs entirely on the user’s machine
-- No telemetry, analytics, or usage reporting
+- No telemetry or analytics
 - No background services
-- No network calls outside AWS APIs
-- Uses the official AWS SDKs only
+- No calls outside AWS APIs and operator-triggered browser opens
+- Uses official AWS SDKs
 - Uses the same credential resolution chain as the AWS CLI
 
-Teams can independently verify its network behavior.
+Verification guidance:
 
-Documentation:
 https://seamlessglance.com/verify
 
 ---
@@ -116,7 +146,6 @@ https://seamlessglance.com/verify
 brew tap fells-code/seamless
 brew install seamless-glance
 
-
 # or directly
 brew install fells-code/seamless/seamless-glance
 ```
@@ -127,9 +156,7 @@ Run with:
 glance
 ```
 
-The seamless-glance command also works.
-
----
+`seamless-glance` also works.
 
 ### macOS and Linux (single binary)
 
@@ -139,23 +166,25 @@ curl -fsSL https://seamlessglance.com/install.sh | bash
 
 ---
 
-## License and Trial
+## License And Trial
 
-Seamless Glance includes a 365-day free trial for non-commerical use.
+Seamless Glance includes a 365-day free trial for non-commercial use.
 
 - No signup
-- No network checks
+- No network license checks
 - Trial license generated locally on first run
 
-Pro licenses can be purchased at https://seamlessglance.com
+Paid licenses are available at:
 
-After purchase, place your license file at:
+https://seamlessglance.com
 
-```
+The license file path is:
+
+```text
 ~/.seamless-glance/license.json
 ```
 
-Check license status at any time:
+Check license status with:
 
 ```bash
 glance --license-status
@@ -165,12 +194,12 @@ glance --license-status
 
 ## AWS Credentials
 
-Seamless Glance uses the same credential resolution chain as the AWS CLI:
+Seamless Glance uses the standard AWS SDK credential chain, including:
 
-- AWS_PROFILE
-- ~/.aws/credentials
-- ~/.aws/config
-- Environment variables
+- `AWS_PROFILE`
+- `~/.aws/credentials`
+- `~/.aws/config`
+- environment variables
 - AWS SSO
 
 Example:
@@ -184,57 +213,70 @@ glance
 
 ## Cost Data Behavior
 
-- Cost Explorer data is fetched at most once every 24 hours
-- Results are cached locally
+- Cost Explorer data is cached locally for 24 hours
 - No background polling
-- No repeated billable calls
+- No repeated billing queries on every screen refresh
+- richer cost insight is reused by Cost Overview and Cost Savings
 
 ---
 
-## Inspecting Network Traffic
+## Key Controls
 
-Seamless Glance communicates only with your cloud service endpoints.
+### Navigation
 
-If you want to verify this yourself, see:
+- `f` Findings
+- `/` command palette
+- `Tab` / `Shift+Tab` cycle major views
+- `1` Account Overview
+- `2` Cost Overview
+- `0` Cost Savings
+- `3` VPC
+- `4` EC2
+- `5` CloudWatch
+- `6` Lambda
+- `7` Secrets Manager
+- `8` ECS
+- `9` API Gateway
 
-https://seamlessglance.com/verify
+### Actions
 
-That page walks through inspecting traffic using tcpdump, Wireshark, HTTPS
-proxies, and AWS SDK debug logging.
+- `d` describe selected resource
+- `v` toggle describe view between structured and JSON-oriented output
+- `c` show AWS CLI command for selected resource
+- `o` open selected resource in AWS Console
+- `s` prepare SSH command for selected EC2 instance
+- `w` toggle wrapped detail mode on supported text-heavy screens
+
+### Movement
+
+- `↑` / `↓` move selection or scroll
+- `PgUp` / `PgDn` jump-scroll lists, overlays, help, or wrapped detail
+- `Home` / `End` jump to top or bottom
+- `←` / `→` switch region
+- `g` jump to the synthetic global region slot
+- `r` refresh active view
+- `?` help
+- `q` quit
 
 ---
 
-## Keyboard Shortcuts
-
-| Key           | Action                       |
-| ------------- | ---------------------------- |
-| Up or Down    | Move cursor                  |
-| d             | Describe selected resource   |
-| o             | Open resource in AWS Console |
-| r             | Refresh current view         |
-| /             | Command palette              |
-| Left or Right | Switch region                |
-| ?             | Help                         |
-| q             | Quit                         |
-
----
-
-## Who This Is For
+## Who It Is For
 
 Seamless Glance is built for:
 
 - DevOps engineers
-- Platform engineers
+- platform engineers
 - SREs
-- Consultants working across multiple AWS accounts
-- Engineers who want fast context without console fatigue
+- consultants working across multiple AWS accounts
+- engineers who want fast AWS context without living in the console
 
 It is especially useful for:
 
-- Daily sanity checks
-- Incident response
-- Auditing unfamiliar AWS accounts
-- Explaining account state during calls or screen shares
+- post-deploy triage
+- incident response
+- unfamiliar account review
+- wasted-resource discovery
+- cost follow-up and optimization
 
 ---
 
@@ -243,11 +285,12 @@ It is especially useful for:
 Seamless Glance is commercial software.
 A valid license, trial or paid, is required to run the application.
 
-By using the software you agree to use it in the purpose it was intended and under the uses it was described.
+By using the software you agree to use it for its intended purpose and under the
+uses described by the product documentation.
 
 ---
 
-## Support and Issues
+## Support And Issues
 
 Please open issues or feature requests here:
 
