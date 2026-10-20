@@ -132,9 +132,16 @@ Seamless Glance is designed for security-conscious environments.
 - Uses official AWS SDKs
 - Uses the same credential resolution chain as the AWS CLI
 
-Verification guidance:
+Verifying what you install:
 
-https://seamlessglance.com/verify
+- Homebrew checks every download against the SHA-256 pinned in the
+  [tap formula](https://github.com/fells-code/homebrew-seamless/blob/main/Formula/seamless-glance.rb)
+  and refuses to install a binary that does not match.
+- `install.sh` downloads the `SHA256SUMS.txt` published with the release and
+  checks the binary against it before installing.
+- For a manual download, compare the binary's checksum with the
+  `SHA256SUMS.txt` attached to the release you downloaded it from, for example
+  `shasum -a 256 seamless-glance-1.0.0-aarch64-apple-darwin`.
 
 ---
 
