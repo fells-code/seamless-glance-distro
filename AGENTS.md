@@ -5,10 +5,12 @@ repository.
 
 ## Purpose
 
-`seamless-glance-distro` is the public distribution channel for Seamless Glance,
-the terminal-native, read-only AWS operations dashboard (a Rust TUI). This repo
-hosts the `install.sh` bootstrap script and the released, prebuilt binaries that
-users download. The application source lives in `seamless-glance`.
+`seamless-glance-distro` was the original distribution channel for Seamless
+Glance, the terminal-native, read-only AWS operations dashboard (a Rust TUI). It
+holds an `install.sh` and the early `v0.x` and `v1.0.0` release binaries.
+Releases, the source, and the canonical installer now live in
+`seamless-glance`; this repo keeps a copy of that installer so existing links
+keep working.
 
 Because `install.sh` is executed via `curl | bash` on user machines, treat it as
 security-sensitive: it must fail closed, verify what it downloads, and never do
@@ -60,16 +62,9 @@ README.md     user-facing install and usage docs
 
 ## How Install Works
 
-- `install.sh` detects OS and architecture, selects the matching
-  `seamless-glance-<version>-<target>` release asset, downloads it, and installs
-  it (default `INSTALL_DIR=/usr/local/bin`) as `seamless-glance` with a `glance`
-  alias.
-- When cutting a release, keep the `VERSION` in `install.sh`, the published
-  release assets, and the README in sync so the installer resolves real files.
-
-## Safe Change Workflow
-
-1. Run `shellcheck install.sh`.
-2. Test the installer end to end on macOS (arm64 and x86_64) and Linux.
-3. Verify version, asset names, and README instructions all agree before a
-   release.
+- `install.sh` is a verbatim copy of `install.sh` in `seamless-glance`. Change it
+  there first, then copy it here unchanged. It resolves the latest release of
+  `fells-code/seamless-glance` (or `SEAMLESS_GLANCE_VERSION`), downloads the
+  matching binary, and refuses to install it unless it matches its entry in the
+  release's `SHA256SUMS.txt`.
+- No per-release edits are needed in this repo.
